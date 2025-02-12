@@ -11,12 +11,16 @@ exports.getAllProjects = async (req, res) => {
 
 exports.createProject = async (req, res) => {
     try {
-        const project = await projectService.createProject(req.body);
+        const projectData = { ...req.body };
+        delete projectData._id;
+        const project = await projectService.createProject(projectData);
         res.status(201).json(project);
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        console.error("Ошибка при создании проекта:", err);
+        res.status(500).json({ error: "Ошибка при создании проекта", details: err.message });
     }
 };
+
 
 exports.deleteProject = async (req, res) => {
     try {

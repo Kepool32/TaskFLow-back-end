@@ -4,6 +4,8 @@ const iconv = require('iconv-lite');
 const mongoose = require("mongoose");
 
 exports.addFilesToTask = async (taskId, files) => {
+    console.log("Пришли файлы для добавления к задаче:", files); // Проверяем файлы
+
     if (!files || files.length === 0) {
         throw new Error("Нет файлов для загрузки");
     }
@@ -14,18 +16,22 @@ exports.addFilesToTask = async (taskId, files) => {
     }
 
     const fileData = files.map((file) => {
-        const decodedFileName = iconv.decode(Buffer.from(file.originalname, 'binary'), 'utf8');
+        console.log("Файл для добавления:", file);
         return {
-            fileName: decodedFileName,
-            url: file.path
+            fileName: file.originalname,
+            url: file.path,
         };
     });
 
     task.files.push(...fileData);
+    console.log("Файлы добавлены в массив задачи:", task.files);
+
     await task.save();
+    console.log("Задача сохранена в базе данных");
 
     return task;
 };
+
 
 exports.deleteFileFromTask = async (taskId, fileId) => {
     const task = await Task.findById(taskId);

@@ -5,19 +5,12 @@ const cors = require("cors");
 const projectRoutes = require('./routes/routeProjects');
 const taskRoutes = require('./routes/routeTasks');
 const commentRoutes = require('./routes/commentRoutes');
-const { join } = require("node:path");
+const {join} = require("node:path");
 
 const app = express();
 
-// Настройка CORS с разрешением доступа с любого источника
-const corsOptions = {
-    origin: '*', // Разрешает доступ с любого источника
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'], // Разрешенные методы
-    allowedHeaders: ['Content-Type', 'Authorization'], // Разрешенные заголовки
-    credentials: true // Если необходимо передавать куки
-};
 
-app.use(cors(corsOptions)); // Используем настройки CORS
+app.use(cors());
 app.use(express.json());
 
 connectDB();
